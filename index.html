@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!-- Template by Quackit.com -->
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <meta http-equiv="CACHE-CONTROL" content="NO-CACHE">
+      <link rel="image_src" href="imgs/hat.png">
+      <meta property="og:image" content="imgs/hat.png" />
+      <meta property="og:image:type" content="image/png" />
+      <!-- jQuery -->
+      <script src="scripts/jquery-1.11.3.min.js"></script>
+      <!-- Custom script -->
+      <script src="scripts/script.js"></script>
+      <script src="scripts/FileSaver.min.js"></script>
+      <script src="scripts/drawables.js"></script>
+      <title>Starbound Instrumentalizer</title>
+   </head>
+   <body>
+      <!-- Content wrapper (mainly to set a different footer color) -->
+      <div id="wrapper">
+         <!-- Navigation -->
+         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+               <!-- Logo and responsive toggle -->
+               <div class="navbar-header">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="/">
+                  <i class="fa fa-github"></i>
+                  <span>Silverfeelin</span>
+                  </a>
+               </div>
+               <!-- Navbar links -->
+               <div class="collapse navbar-collapse" id="navbar">
+                  <ul class="nav navbar-nav">
+                     <!-- li class="active" -->
+                     <li>
+                        <a href="https://github.com/Silverfeelin/Starbound-Instrumentalizer">View project on GitHub</a>
+                     </li>
+                  </ul>
+               </div>
+            </div>
+         </nav>
+         <!-- Jumbotron -->
+         <div id="featureBackground">
+            <div id="feature" class="jumbotron feature">
+               <div class="container">
+                  <h1>
+                     <canvas id="logoInstrument"></canvas>
+                     Starbound Instrumentalizer
+                  </h1>
+                  <p>Multiplayer compatible custom instruments!</p>
+               </div>
+            </div>
+         </div>
+         <!-- Content -->
+         <div class="container">
+            <div class="row">
+               <div class="col-md-6">
+                  <h3 class="content-header">Generate</h3>
+                  <label for="btnSelectImage">Select an instrument (up to 96x96):</label><br>
+                  <button id="btnSelectImage" class="btn btn-default">Select Image</button><br>
+                  <input style="display:none;" id="selectImage" type="file" accept="image/*">
+                  <div class="form-group">
+                     <label for="itemName">Item name:</label>
+                     <input id="itemName" type="text" class="form-control" value="^orange;Custom Instrument">
+                     <label for="itemDescription">Item description:</label>
+                     <input id="itemDescription" type="text" class="form-control" value="A custom instrument created by me!">
+                     <label for="itemInstrument">Instrument:</label>
+                     <select id="itemInstrument" class="form-control">
+                        <option value="accordion">Accordion</option>
+                        <option value="acousticguitar">Acoustic Guitar</option>
+                        <option value="banjo">Banjo</option>
+                        <option value="bassguitar">Bass Guitar</option>
+                        <option value="brightpiano">Bright Piano</option>
+                        <option value="clarinet">Clarinet</option>
+                        <option value="drumkit">Drum Kit</option>
+                        <option value="electricbass">Electric Bass Guitar</option>
+                        <option value="bones">Floran Bone Xylophone</option>
+                        <option value="flute">Flute</option>
+                        <option value="dulcimer">Hammered Dulcimer</option>
+                        <option value="harmonica">Harmonica</option>
+                        <option value="harp">Harp</option>
+                        <option value="koto">Koto</option>
+                        <option value="leadguitar">Lead Guitar</option>
+                        <option value="microphone">Microphone (Male)</option>
+                        <option value="microphonefem">Microphone (Female)</option>
+                        <option value="musicbox">Music Box</option>
+                        <option value="nylonguitar">Nylon Guitar</option>
+                        <option value="ocarina">Ocarina</option>
+                        <option value="oboe">Oboe</option>
+                        <option value="overdriveguitar">Overdrive Guitar</option>
+                        <option value="piano">Piano</option>
+                        <option value="reedorgan">Reed Organ</option>
+                        <option value="rockorgan">Rock Organ</option>
+                        <option value="saxophone">Saxophone</option>
+                        <option value="steeldrum">Steel Drum</option>
+                        <option value="keyboard">The Model M</option>
+                        <option value="trumpet">Trumpet</option>
+                        <option value="violin">Violin</option>
+                     </select>
+                     <label for="itemRarity">Item rarity:</label>
+                     <select id="itemRarity" class="form-control">
+                        <option value="common">Common</option>
+                        <option value="uncommon">Uncommon</option>
+                        <option value="rare">Rare</option>
+                        <option selected value="legendary">Legendary</option>
+                        <option value="essential">Essential</option>
+                     </select>
+                  </div>
+                  <br>
+                  <div class="form-group">
+                     <button id="btnPlainText" class="btn btn-success">Generate Item File</button>
+                     <button id="btnCommand" class="btn btn-success">Generate Command File</button>
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <h3 class="content-header">Preview</h3>
+                  <div id="cvsPreview" style="position:relative;width:400px;height:400px;overflow:hidden;">
+                     <canvas class="cvsPreview img-rounded rounded" width="394" height="373" style="height:400px; width:400px;z-index:0;position:absolute;left:0px;bottom:0px;" id="cvsPreviewBackground"></canvas>
+                     <canvas class="cvsPreview" width="394" height="373" style="position:absolute;left:144px;bottom:159px;height:86px; width:86px; z-index:1;" id="cvsPreviewCharacter"></canvas>
+                     <canvas class="cvsPreview" width="394" height="373" style="position:absolute;left:0px;bottom:0px;height:373px; width:394px; z-index:2;" id="cvsPreviewInstrument"></canvas>
+                     <canvas class="cvsPreview" width="394" height="373" style="position:absolute;left:144px;bottom:159px;height:86px; width:86px; z-index:3;" id="cvsPreviewArm"></canvas>
+                  </div>
+                  <div>
+                     <img data-target="imgs/buildingBackground.png" class="previewTheme img-rounded" style="cursor:pointer;" src="imgs/buildingIcon.png">
+                     <img data-target="imgs/lightBackground.png" class="previewTheme img-rounded" style="cursor:pointer;" src="imgs/lightIcon.png">
+                     <img data-target="imgs/darkBackground.png" class="previewTheme img-rounded" style="cursor:pointer;" src="imgs/darkIcon.png">
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-md-6">
+                  <h3 class="content-header">Examples</h3>
+                  <img style="vertical-align: top;" src="imgs/sax.png">
+                  <img src="imgs/sample1.png">
+               </div>
+               <div class="col-md-6">
+                  <h3 class="content-header">Make an Instrument</h3>
+                  <p>
+                     You can use the below sample image if you want to create your own instrument. The character has been aligned to match your character's position in-game.<br>
+                  </p>
+                  <img style="vertical-align: top;" src="imgs/template.png">
+                  <p>
+                     If you're creating an instrument using different dimensions than those of the template above, please note that the center of your image will line up with the center of the red cross illustrated below. Custom images may not exceed 96x96 pixels.<br>The below image can not be used as a template, as it has been resized.
+                  </p>
+                  <p>
+                     Paint.NET users may use <a href="imgs/instrumentTemplate.pdn">this project file</a> to easily create instruments. Make sure to hide the character layer before saving, and make sure you select the PNG file format!
+                  </p>
+                  <img style="vertical-align: top;" src="imgs/center.png">
+                  <img style="vertical-align: top;" src="imgs/untickLayer.png">
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Footer -->
+      <footer>
+         <div class="col-lg-12 small-print">
+            <div class="container">
+               <p><a href="http://playstarbound.com/">Official Starbound site</a></p>
+               <hr>
+               <div>
+                  <p style="float:left;"><a href="https://github.com/Silverfeelin/Starbound-Instrumentalizer/blob/master/credits.md">Credits and Licenses</a></p>
+                  <p style="float:right;">Contact me: <a href="mailto:silverfeelin@gmail.com">Silverfeelin@gmail.com</a></p>
+               </div>
+            </div>
+         </div>
+      </footer>
+      <!-- Bootstrap Core CSS -->
+      <link href="css/bootstrap.css" rel="stylesheet">
+      <!-- Font Awesome CSS -->
+      <link href="css/font-awesome.css" rel="stylesheet">
+      <!-- Bootstrap Core JavaScript -->
+      <script src="scripts/bootstrap.min.js"></script>
+      <!-- Custom CSS: You can use this stylesheet to override any Bootstrap styles and/or apply your own styles -->
+      <link href="css/custom.css?v=1.1" rel="stylesheet">
+   </body>
+</html>
