@@ -1,2 +1,2 @@
-# Starbound-Instrumentalizer
-Multiplayer compatible custom instruments!
+# Starbound Instrumentalizer
+https://silverfeelin.github.io/Starbound-Instrumentalizer/
