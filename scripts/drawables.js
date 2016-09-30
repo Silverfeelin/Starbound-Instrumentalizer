@@ -294,7 +294,7 @@ function generatePlainText() {
     obj.parameters.image = obj.parameters.image + directives;
     obj.parameters.activeImage = obj.parameters.image;
 
-    var blob = new Blob([ JSON.stringify(obj, null, 2)], {type: "text/plain;charset=utf8"});
+    var blob = new Blob([ JSON.stringify(obj, null, 2) ], {type: "text/plain;charset=utf8"});
     saveAs(blob, "CustomInstrument.json");
   }
 }
@@ -353,13 +353,15 @@ function generateCommand() {
 
     obj.inventoryIcon = invIcons.hasOwnProperty(selectedInstrument) ? invIcons[selectedInstrument] : (selectedInstrument + "icon.png");
 
-    obj.shortdescription = $("#itemName").get(0).value;
-    obj.description = $("#itemDescription").get(0).value;
+    // Double escaping to work around the escaping done by the chat processor (ew).
+    obj.shortdescription = $("#itemName").get(0).value.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
+    obj.description = $("#itemDescription").get(0).value.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
     obj.rarity = $("#itemRarity").get(0).value;
     obj.image = obj.image + directives;
     obj.activeImage = obj.image;
 
-    var cmd = "/spawnitem " + selectedInstrument + " 1 '" + JSON.stringify(obj) + "'";
+    // Escape quotes in JSON parameters to prevent early end of stream (since parameters are wrapped in ' in the chat processor).
+    var cmd = "/spawnitem " + selectedInstrument + " 1 '" + JSON.stringify(obj).replace(/'/g, "\\'") + "'";
     var blob = new Blob([ cmd ], {type: "text/plain;charset=utf8"});
     saveAs(blob, "CustomInstrumentCommand.txt");
   }
