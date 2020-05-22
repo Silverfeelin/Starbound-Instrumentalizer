@@ -300,7 +300,7 @@ function generatePlainText() {
       obj.parameters.inventoryIcon = obj.parameters.image;
     }
     
-    obj.parameters.largeImage = obj.parameters.inventoryIcon + "?scalenearest=2"
+    obj.parameters.largeImage = obj.parameters.inventoryIcon + "?scalenearest=2";
 
     var blob = new Blob([ JSON.stringify(obj, null, 2) ], {type: "text/plain;charset=utf8"});
     saveAs(blob, "CustomInstrument.json");
