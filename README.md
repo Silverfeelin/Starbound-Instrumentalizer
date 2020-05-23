@@ -1,2 +1,4 @@
-# Starbound Instrumentalizer
-https://silverfeelin.github.io/Starbound-Instrumentalizer/
+# Improved Starbound Instrumentalizer
+https://vortetty.github.io/Starbound-Instrumentalizer/
+
+Original by Simverfeelin
