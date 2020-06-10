@@ -286,13 +286,21 @@ function generatePlainText() {
       trumpet: "trumpet.png"
     };
 
-    obj.parameters.inventoryIcon = invIcons.hasOwnProperty(selectedInstrument) ? invIcons[selectedInstrument] : (selectedInstrument + "icon.png");
-
+    usedirectiveicon = document.getElementById("usedirectivesicon").checked;
+    
     obj.parameters.shortdescription = $("#itemName").get(0).value;
     obj.parameters.description = $("#itemDescription").get(0).value;
     obj.parameters.rarity = $("#itemRarity").get(0).value;
     obj.parameters.image = obj.parameters.image + directives;
     obj.parameters.activeImage = obj.parameters.image;
+    
+    if(usedirectiveicon != true){
+      obj.parameters.inventoryIcon = invIcons.hasOwnProperty(selectedInstrument) ? invIcons[selectedInstrument] : (selectedInstrument + "icon.png");
+    } else {
+      obj.parameters.inventoryIcon = obj.parameters.image;
+    }
+    
+    obj.parameters.largeImage = obj.parameters.inventoryIcon + "?scalenearest=2";
 
     var blob = new Blob([ JSON.stringify(obj, null, 2) ], {type: "text/plain;charset=utf8"});
     saveAs(blob, "CustomInstrument.json");
