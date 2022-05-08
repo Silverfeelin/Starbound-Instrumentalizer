@@ -233,78 +233,73 @@ function drawableLoaded() {
  * Generates an export for the current image, and starts a download for it.
  */
 function generatePlainText() {
+  if (!confirmDrawable(true)) { return; }
+  var directives = generateDirectives(drawableImage, {setWhite : true});
 
-  if (confirmDrawable(true)) {
-    var directives = generateDirectives(drawableImage, {setWhite : true});
-
-    var obj = {
-      "count": 1,
-      "name": "accordion",
-      "parameters": {
-        "activeAngle": 0,
-        "activeHandPosition": [ 0, 0 ],
-        "activeImage": "/assetMissing.png",
-        "description": "An accordion. Get those arms working!",
-        "handPosition": [ 0, 0 ],
-        "image": "/assetMissing.png",
-        "inventoryIcon": "/assetMissing.png",
-        "itemName": "accordion",
-        "kind": "accordion",
-        "largeImage": "/assetMissing.png",
-        "maxStack": 1,
-        "price": 1000,
-        "rarity": "common",
-        "shortdescription": "Accordion",
-        "tooltipKind": "tool",
-        "twoHanded": true,
-        "modNote": "Custom item created using http://Silvermods.com/Instrumentalizer"
-      }
-    };
-
-    var selectedInstrument = $("#itemInstrument").get(0).value;
-    obj.name = selectedInstrument;
-    obj.parameters.itemName = selectedInstrument;
-    obj.parameters.kind = selectedInstrument;
-
-    var oneHanded = [ "microphone", "microphonefem" ];
-    if ($.inArray(selectedInstrument, oneHanded) > -1)
-      obj.parameters.twoHanded = false;
-
-    // Overrides for inventory icons that do not match the default naming convention '<instrumentName>icon.png'.
-    var invIcons = {
-      bones: "bonexylophoneicon.png",
-      brightpiano: "keytarorangeicon.png",
-      drumkit: "drum.png",
-      electricbass: "electricbassguitaricon.png",
-      keyboard: "keyboard.png",
-      microphone: "microphone.png",
-      microphonefem: "microphonefem.png",
-      musicbox: "keytarblueicon.png",
-      piano: "keytaricon.png",
-      reedorgan: "keytargreenicon.png",
-      rockorgan: "keytarredicon.png",
-      trumpet: "trumpet.png"
-    };
-
-    usedirectiveicon = document.getElementById("usedirectivesicon").checked;
-    
-    obj.parameters.shortdescription = $("#itemName").get(0).value;
-    obj.parameters.description = $("#itemDescription").get(0).value;
-    obj.parameters.rarity = $("#itemRarity").get(0).value;
-    obj.parameters.image = obj.parameters.image + directives;
-    obj.parameters.activeImage = obj.parameters.image;
-    
-    if(usedirectiveicon != true){
-      obj.parameters.inventoryIcon = invIcons.hasOwnProperty(selectedInstrument) ? invIcons[selectedInstrument] : (selectedInstrument + "icon.png");
-    } else {
-      obj.parameters.inventoryIcon = obj.parameters.image;
+  var obj = {
+    "count": 1,
+    "name": "accordion",
+    "parameters": {
+      "activeAngle": 0,
+      "activeHandPosition": [ 0, 0 ],
+      "activeImage": "/assetMissing.png",
+      "description": "An accordion. Get those arms working!",
+      "handPosition": [ 0, 0 ],
+      "image": "/assetMissing.png",
+      "inventoryIcon": "/assetMissing.png",
+      "itemName": "accordion",
+      "kind": "accordion",
+      "largeImage": "/assetMissing.png",
+      "maxStack": 1,
+      "price": 1000,
+      "rarity": "common",
+      "shortdescription": "Accordion",
+      "tooltipKind": "tool",
+      "twoHanded": true,
+      "modNote": "Custom item created using http://Silvermods.com/Instrumentalizer"
     }
-    
-    obj.parameters.largeImage = obj.parameters.inventoryIcon + "?scalenearest=2";
+  };
 
-    var blob = new Blob([ JSON.stringify(obj, null, 2) ], {type: "text/plain;charset=utf8"});
-    saveAs(blob, "CustomInstrument.json");
-  }
+  var selectedInstrument = $("#itemInstrument").get(0).value;
+  obj.name = selectedInstrument;
+  obj.parameters.itemName = selectedInstrument;
+  obj.parameters.kind = selectedInstrument;
+
+  var oneHanded = [ "microphone", "microphonefem" ];
+  if ($.inArray(selectedInstrument, oneHanded) > -1)
+    obj.parameters.twoHanded = false;
+
+  // Overrides for inventory icons that do not match the default naming convention '<instrumentName>icon.png'.
+  var invIcons = {
+    bones: "bonexylophoneicon.png",
+    brightpiano: "keytarorangeicon.png",
+    drumkit: "drum.png",
+    electricbass: "electricbassguitaricon.png",
+    keyboard: "keyboard.png",
+    microphone: "microphone.png",
+    microphonefem: "microphonefem.png",
+    musicbox: "keytarblueicon.png",
+    piano: "keytaricon.png",
+    reedorgan: "keytargreenicon.png",
+    rockorgan: "keytarredicon.png",
+    trumpet: "trumpet.png"
+  };
+
+  
+  obj.parameters.shortdescription = $("#itemName").get(0).value;
+  obj.parameters.description = $("#itemDescription").get(0).value;
+  obj.parameters.rarity = $("#itemRarity").get(0).value;
+  obj.parameters.image = obj.parameters.image + directives;
+  obj.parameters.activeImage = obj.parameters.image;
+  
+  var useDirectiveIcon = document.getElementById("usedirectivesicon").checked;
+  obj.parameters.inventoryIcon = useDirectiveIcon ? obj.parameters.image
+    : invIcons.hasOwnProperty(selectedInstrument) ? invIcons[selectedInstrument] : (selectedInstrument + "icon.png");
+  
+  obj.parameters.largeImage = obj.parameters.inventoryIcon + "?scalenearest=2";
+
+  var blob = new Blob([ JSON.stringify(obj, null, 2) ], {type: "text/plain;charset=utf8"});
+  saveAs(blob, "CustomInstrument.json");
 }
 
 /**
@@ -312,67 +307,68 @@ function generatePlainText() {
  */
 function generateCommand() {
 
-  if (confirmDrawable(true)) {
-    var directives = generateDirectives(drawableImage, {setWhite : true});
+  if (!confirmDrawable(true)) { return; }
+  var directives = generateDirectives(drawableImage, {setWhite : true});
 
-    var obj = {
-        "activeAngle": 0,
-        "activeHandPosition": [ 0, 0 ],
-        "activeImage": "/assetMissing.png",
-        "description": "An accordion. Get those arms working!",
-        "handPosition": [ 0, 0 ],
-        "image": "/assetMissing.png",
-        "inventoryIcon": "/assetMissing.png",
-        "itemName": "accordion",
-        "kind": "accordion",
-        "largeImage": "/assetMissing.png",
-        "maxStack": 1,
-        "price": 1000,
-        "rarity": "common",
-        "shortdescription": "Accordion",
-        "tooltipKind": "tool",
-        "twoHanded": true,
-        "modNote": "Custom item created using http://Silvermods.com/Instrumentalizer"
-      };
-
-    var selectedInstrument = $("#itemInstrument").get(0).value;
-    obj.itemName = selectedInstrument;
-    obj.kind = selectedInstrument;
-
-    var oneHanded = [ "microphone", "microphonefem" ];
-    if ($.inArray(selectedInstrument, oneHanded) > -1)
-      obj.twoHanded = false;
-
-    // Overrides for inventory icons that do not match the default naming convention '<instrumentName>icon.png'.
-    var invIcons = {
-      bones: "bonexylophoneicon.png",
-      brightpiano: "keytarorangeicon.png",
-      drumkit: "drum.png",
-      electricbass: "electricbassguitaricon.png",
-      keyboard: "keyboard.png",
-      microphone: "microphone.png",
-      microphonefem: "microphonefem.png",
-      musicbox: "keytarblueicon.png",
-      piano: "keytaricon.png",
-      reedorgan: "keytargreenicon.png",
-      rockorgan: "keytarredicon.png",
-      trumpet: "trumpet.png"
+  var obj = {
+      "activeAngle": 0,
+      "activeHandPosition": [ 0, 0 ],
+      "activeImage": "/assetMissing.png",
+      "description": "An accordion. Get those arms working!",
+      "handPosition": [ 0, 0 ],
+      "image": "/assetMissing.png",
+      "inventoryIcon": "/assetMissing.png",
+      "itemName": "accordion",
+      "kind": "accordion",
+      "largeImage": "/assetMissing.png",
+      "maxStack": 1,
+      "price": 1000,
+      "rarity": "common",
+      "shortdescription": "Accordion",
+      "tooltipKind": "tool",
+      "twoHanded": true,
+      "modNote": "Custom item created using http://Silvermods.com/Instrumentalizer"
     };
 
-    obj.inventoryIcon = invIcons.hasOwnProperty(selectedInstrument) ? invIcons[selectedInstrument] : (selectedInstrument + "icon.png");
+  var selectedInstrument = $("#itemInstrument").get(0).value;
+  obj.itemName = selectedInstrument;
+  obj.kind = selectedInstrument;
 
-    // Double escaping to work around the escaping done by the chat processor (ew).
-    obj.shortdescription = $("#itemName").get(0).value.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
-    obj.description = $("#itemDescription").get(0).value.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
-    obj.rarity = $("#itemRarity").get(0).value;
-    obj.image = obj.image + directives;
-    obj.activeImage = obj.image;
+  var oneHanded = [ "microphone", "microphonefem" ];
+  if ($.inArray(selectedInstrument, oneHanded) > -1)
+    obj.twoHanded = false;
 
-    // Escape quotes in JSON parameters to prevent early end of stream (since parameters are wrapped in ' in the chat processor).
-    var cmd = "/spawnitem " + selectedInstrument + " 1 '" + JSON.stringify(obj).replace(/'/g, "\\'") + "'";
-    var blob = new Blob([ cmd ], {type: "text/plain;charset=utf8"});
-    saveAs(blob, "CustomInstrumentCommand.txt");
-  }
+  // Overrides for inventory icons that do not match the default naming convention '<instrumentName>icon.png'.
+  var invIcons = {
+    bones: "bonexylophoneicon.png",
+    brightpiano: "keytarorangeicon.png",
+    drumkit: "drum.png",
+    electricbass: "electricbassguitaricon.png",
+    keyboard: "keyboard.png",
+    microphone: "microphone.png",
+    microphonefem: "microphonefem.png",
+    musicbox: "keytarblueicon.png",
+    piano: "keytaricon.png",
+    reedorgan: "keytargreenicon.png",
+    rockorgan: "keytarredicon.png",
+    trumpet: "trumpet.png"
+  };
+
+  var useDirectiveIcon = document.getElementById("usedirectivesicon").checked;
+  obj.parameters.inventoryIcon = useDirectiveIcon ? obj.parameters.image
+    : invIcons.hasOwnProperty(selectedInstrument) ? invIcons[selectedInstrument] : (selectedInstrument + "icon.png");
+
+  // Double escaping to work around the escaping done by the chat processor (ew).
+  obj.shortdescription = $("#itemName").get(0).value.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
+  obj.description = $("#itemDescription").get(0).value.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");
+  obj.rarity = $("#itemRarity").get(0).value;
+  obj.image = obj.image + directives;
+  obj.activeImage = obj.image;
+
+  // Escape quotes in JSON parameters to prevent early end of stream (since parameters are wrapped in ' in the chat processor).
+  var cmd = "/spawnitem " + selectedInstrument + " 1 '" + JSON.stringify(obj).replace(/'/g, "\\'") + "'";
+  var blob = new Blob([ cmd ], {type: "text/plain;charset=utf8"});
+  saveAs(blob, "CustomInstrumentCommand.txt");
 }
 
 /**
