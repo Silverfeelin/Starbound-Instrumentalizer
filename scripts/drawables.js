@@ -294,7 +294,7 @@ function generatePlainText() {
   
   var useDirectiveIcon = document.getElementById("usedirectivesicon").checked;
   obj.parameters.inventoryIcon = useDirectiveIcon ? obj.parameters.image
-    : invIcons.hasOwnProperty(selectedInstrument) ? invIcons[selectedInstrument] : (selectedInstrument + "icon.png");
+    : Object.prototype.hasOwnProperty.call(invIcons,selectedInstrument) ? invIcons[selectedInstrument] : (selectedInstrument + "icon.png");
   
   obj.parameters.largeImage = obj.parameters.inventoryIcon + "?scalenearest=2";
 
